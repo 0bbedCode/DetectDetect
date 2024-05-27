@@ -1,0 +1,21 @@
+C:\Users\user\source\repos\DetectDetect\DetectDetect\bin\Debug\DetectDetect.exe.config
+C:\Users\user\source\repos\DetectDetect\DetectDetect\bin\Debug\DetectDetect.exe
+C:\Users\user\source\repos\DetectDetect\DetectDetect\bin\Debug\DetectDetect.pdb
+C:\Users\user\source\repos\DetectDetect\DetectDetect\obj\Debug\DetectDetect.csproj.AssemblyReference.cache
+C:\Users\user\source\repos\DetectDetect\DetectDetect\obj\Debug\DetectDetect.csproj.CoreCompileInputs.cache
+C:\Users\user\source\repos\DetectDetect\DetectDetect\obj\Debug\DetectDetect.exe
+C:\Users\user\source\repos\DetectDetect\DetectDetect\obj\Debug\DetectDetect.pdb
+D:\Windows (5-20-24)\IDen\Source\source\repos\DetectDetect\DetectDetect\bin\Debug\DetectDetect.exe.config
+D:\Windows (5-20-24)\IDen\Source\source\repos\DetectDetect\DetectDetect\bin\Debug\DetectDetect.exe
+D:\Windows (5-20-24)\IDen\Source\source\repos\DetectDetect\DetectDetect\bin\Debug\DetectDetect.pdb
+D:\Windows (5-20-24)\IDen\Source\source\repos\DetectDetect\DetectDetect\obj\Debug\DetectDetect.csproj.AssemblyReference.cache
+D:\Windows (5-20-24)\IDen\Source\source\repos\DetectDetect\DetectDetect\obj\Debug\DetectDetect.csproj.CoreCompileInputs.cache
+D:\Windows (5-20-24)\IDen\Source\source\repos\DetectDetect\DetectDetect\obj\Debug\DetectDetect.exe
+D:\Windows (5-20-24)\IDen\Source\source\repos\DetectDetect\DetectDetect\obj\Debug\DetectDetect.pdb
+C:\Users\Jake\Desktop\DetectDetect\DetectDetect\bin\Debug\DetectDetect.exe.config
+C:\Users\Jake\Desktop\DetectDetect\DetectDetect\bin\Debug\DetectDetect.exe
+C:\Users\Jake\Desktop\DetectDetect\DetectDetect\bin\Debug\DetectDetect.pdb
+C:\Users\Jake\Desktop\DetectDetect\DetectDetect\obj\Debug\DetectDetect.csproj.AssemblyReference.cache
+C:\Users\Jake\Desktop\DetectDetect\DetectDetect\obj\Debug\DetectDetect.csproj.CoreCompileInputs.cache
+C:\Users\Jake\Desktop\DetectDetect\DetectDetect\obj\Debug\DetectDetect.exe
+C:\Users\Jake\Desktop\DetectDetect\DetectDetect\obj\Debug\DetectDetect.pdb
