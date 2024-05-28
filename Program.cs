@@ -19,7 +19,7 @@ namespace DetectDetect
 {
     internal class Program {
         public static string TAG = "Test";
-        public static string WEBHOOK = "https://discord.com/api/webhooks/1244139191567126578/KwDFQoCzDOjJB9O-H6YL-K4rUrFR6vIwVxp6erOHJLvPpzNIV8U8DMTtycBL1rPW1nIj";
+        public static string WEBHOOK = "WEBHOOK";
         public static string SESSION_ID = Guid.NewGuid().ToString();
 
         static void Main(string[] args) {
