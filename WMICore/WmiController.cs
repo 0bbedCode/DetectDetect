@@ -35,10 +35,8 @@ namespace DetectDetect.WMICore
             return 0;
         }
 
-        internal static IEnumerable<ManagementObject> GetObjects(string classLocation, bool isWin32 = true)
-        {
-            try
-            {
+        internal static IEnumerable<ManagementObject> GetObjects(string classLocation, bool isWin32 = true)  {
+            try  {
                 classLocation = FixClass(classLocation, isWin32);
                 return (new ManagementObjectSearcher($"select * from {classLocation}").Get().Cast<ManagementObject>());
             }

@@ -22,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -36,8 +37,11 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Design" />
     <Reference Include="System.Management" />
     <Reference Include="System.Net" />
     <Reference Include="System.Runtime.Serialization" />
@@ -51,35 +55,63 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DiscordWebhook.cs" />
+    <Compile Include="Info\NetCard.cs" />
+    <Compile Include="Info\Sys.cs" />
+    <Compile Include="Info\SysInfoClassDumper.cs" />
+    <Compile Include="Native\IntPtrExtensions.cs" />
+    <Compile Include="Native\LibraryExtensions.cs" />
+    <Compile Include="Native\Pairs.cs" />
+    <Compile Include="Native\FuncFactory.cs" />
+    <Compile Include="Native\Library.cs" />
+    <Compile Include="Native\PInvoke.cs" />
+    <Compile Include="Native\PInvokeUtils.cs" />
+    <Compile Include="Native\Win32.cs" />
+    <Compile Include="Reggy\RegHive.cs" />
+    <Compile Include="Reggy\RegKey.cs" />
+    <Compile Include="Reporter\FileReport.cs" />
+    <Compile Include="Reporter\ProcessReport.cs" />
+    <Compile Include="Reporter\RegReport.cs" />
+    <Compile Include="Utils\FileUtils.cs" />
+    <Compile Include="WinProcess\PROCESSENTRY32.cs" />
+    <Compile Include="WinProcess\Win32Process.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StrUtils.cs" />
-    <Compile Include="SysInfo.cs" />
-    <Compile Include="WallapaperHelper.cs" />
-    <Compile Include="WMICore\IWmiObject.cs" />
+    <Compile Include="Reporter\ReportWriter.cs" />
+    <Compile Include="Utils\ReflectUtils.cs" />
+    <Compile Include="Utils\ShellUtils.cs" />
+    <Compile Include="Utils\StrUtils.cs" />
+    <Compile Include="Utils\SysInfoUtils.cs" />
+    <Compile Include="Utils\WallapaperUtils.cs" />
+    <Compile Include="WMICore\Classes\WmiAccount.cs" />
+    <Compile Include="WMICore\Classes\WmiBaseBoard.cs" />
+    <Compile Include="WMICore\Classes\WmiBiosElement.cs" />
+    <Compile Include="WMICore\Classes\WmiCacheMemory.cs" />
+    <Compile Include="WMICore\Classes\WmiComputerSystem.cs" />
+    <Compile Include="WMICore\Classes\WmiDesktop.cs" />
+    <Compile Include="WMICore\Classes\WmiDesktopMonitor.cs" />
+    <Compile Include="WMICore\Classes\WmiDiskDrive.cs" />
+    <Compile Include="WMICore\Classes\WmiDiskPartition.cs" />
+    <Compile Include="WMICore\Classes\WmiLogicalDisk.cs" />
+    <Compile Include="WMICore\Classes\WmiMemory.cs" />
+    <Compile Include="WMICore\Classes\WmiNetworkAdapter.cs" />
+    <Compile Include="WMICore\Classes\WmiNetworkAdapterConfiguration.cs" />
+    <Compile Include="WMICore\Classes\WmiNTEventlogFile.cs" />
+    <Compile Include="WMICore\Classes\WmiOperatingSystem.cs" />
+    <Compile Include="WMICore\Classes\WmiPhysicalConnector.cs" />
+    <Compile Include="WMICore\Classes\WmiPhysicalMemory.cs" />
+    <Compile Include="WMICore\Classes\WmiPnpEntity.cs" />
+    <Compile Include="WMICore\Classes\WmiProcess.cs" />
+    <Compile Include="WMICore\Classes\WmiProcessor.cs" />
+    <Compile Include="WMICore\Classes\WmiService.cs" />
+    <Compile Include="WMICore\Classes\WmiSlot.cs" />
+    <Compile Include="WMICore\Classes\WmiUSBHub.cs" />
+    <Compile Include="WMICore\Classes\WmiUserAccount.cs" />
+    <Compile Include="WMICore\Classes\WmiVideoController.cs" />
+    <Compile Include="WMICore\Classes\WmiVolume.cs" />
+    <Compile Include="WMICore\Classes\WmiVolumeSet.cs" />
+    <Compile Include="WMICore\IWmiClassReader.cs" />
     <Compile Include="WMICore\ManagementExtensions.cs" />
-    <Compile Include="WMICore\Objects\WmiCompterSystem.cs" />
-    <Compile Include="WMICore\Objects\WmiDesktop.cs" />
-    <Compile Include="WMICore\Objects\WmiDesktops.cs" />
-    <Compile Include="WMICore\Objects\WmiDiskDrive.cs" />
-    <Compile Include="WMICore\Objects\WmiDiskDrives.cs" />
-    <Compile Include="WMICore\Objects\WmiLogicalDisk.cs" />
-    <Compile Include="WMICore\Objects\WmiLogicalDisks.cs" />
-    <Compile Include="WMICore\Objects\WmiOperatingSystem.cs" />
-    <Compile Include="WMICore\Objects\WmiPhysicalConnector.cs" />
-    <Compile Include="WMICore\Objects\WmiPhysicalConnectors.cs" />
-    <Compile Include="WMICore\Objects\WmiPnpDevice.cs" />
-    <Compile Include="WMICore\Objects\WmiPnpDevices.cs" />
-    <Compile Include="WMICore\Objects\WmiProcess.cs" />
-    <Compile Include="WMICore\Objects\WmiProcesses.cs" />
-    <Compile Include="WMICore\Objects\WmiService.cs" />
-    <Compile Include="WMICore\Objects\WmiServices.cs" />
-    <Compile Include="WMICore\Objects\WmiUserAccount.cs" />
-    <Compile Include="WMICore\Objects\WmiUserAccounts.cs" />
-    <Compile Include="WMICore\Objects\WmiVideoController.cs" />
-    <Compile Include="WMICore\Objects\WmiVideoControllers.cs" />
-    <Compile Include="WMICore\Objects\WmiVolume.cs" />
-    <Compile Include="WMICore\Objects\WmiVolumes.cs" />
+    <Compile Include="WMICore\Classes\WmiBus.cs" />
     <Compile Include="WMICore\WmiController.cs" />
     <Compile Include="WMICore\WmiConv.cs" />
   </ItemGroup>
@@ -88,5 +120,6 @@
     <None Include="app.manifest" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

