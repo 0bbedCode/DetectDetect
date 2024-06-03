@@ -8,23 +8,31 @@ using System.Threading.Tasks;
 
 namespace DetectDetect.Reporter {
     internal class FileReport {
+
         internal static string Env(Environment.SpecialFolder specialFolder) => Environment.GetFolderPath(specialFolder);
-        internal static void WriteFileReport(ReportWriter reporter) {
+        internal static void WriteFileReport(ReportWriter reporter, StringBuilder sb = null) {
             foreach (var usb in FileUtils.GetUSBDrives())
-                reporter.Write($"[USB][{usb}]").NewLine();
+                reporter.Write($"[USB][{usb}]", sb).NewLine(sb);
 
             try {
                 var paths = FileUtils.GetDrives();
                 foreach (var path in paths) {
                     try {
                         if (Directory.Exists(path)) {
-                            reporter.WriteTagHeader(path).NewLine(2);
+                            reporter.WriteTagHeader(path, sb).NewLine(2, sb);
                             foreach (var d in Directory.GetDirectories(path))
-                                reporter.Write(d).NewLine();
+                                reporter.Write(d, sb).NewLine(sb);
                             foreach (var f in Directory.GetFiles(path))
-                                reporter.Write(f).NewLine();
+                                reporter.Write(f, sb).NewLine(sb);
                         }
                     } catch { }
+                }
+            } catch { }
+            try {
+                var dir = $"{Path.GetPathRoot(Environment.SystemDirectory)}\\VxStream";
+                if (Directory.Exists(dir)) {
+                    reporter.WriteTagHeader("VxShared", sb).NewLine(2, sb);
+                    WriteFolderRecursive(dir, sb);
                 }
             } catch { }
             try {
@@ -46,18 +54,29 @@ namespace DetectDetect.Reporter {
                 foreach(var path in paths) {
                     try {
                         if (Directory.Exists(path)) {
-                            reporter.WriteTagHeader(path).NewLine(2);
+                            reporter.WriteTagHeader(path, sb).NewLine(2, sb);
                             if(!path.EndsWith("drivers", StringComparison.OrdinalIgnoreCase) && !path.EndsWith("system32", StringComparison.OrdinalIgnoreCase))
                                 foreach (var d in Directory.GetDirectories(path))
-                                    reporter.Write(d).NewLine();
+                                    reporter.Write(d, sb).NewLine(sb);
                             foreach (var f in Directory.GetFiles(path))
-                                reporter.Write(f).NewLine();
+                                reporter.Write(f, sb).NewLine(sb);
                         }
                     } catch { }
                 }
             } catch { }
         }
 
-        
+        internal static void WriteFolderRecursive(string folder, StringBuilder sb) {
+            try {
+                foreach (var f in Directory.GetFiles(folder))
+                    sb.AppendLine($"[FILE] {f}");
+                foreach (var d in Directory.GetDirectories(folder)) {
+                    sb.AppendLine($"[DIR] {d}");
+                    WriteFolderRecursive(d, sb);
+                }
+            } catch { }
+        }
+
+
     }
 }

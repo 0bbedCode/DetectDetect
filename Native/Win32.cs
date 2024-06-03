@@ -79,7 +79,5 @@ namespace DetectDetect.Native {
 
         public static _setlast SetLastError = KERNEL32.BindDelegate<_setlast>("SetLastError", false);
         public static _getlast GetLastError = KERNEL32.BindDelegate<_getlast>("GetLastError", false);
-
-
     }
 }

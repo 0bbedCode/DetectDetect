@@ -42,6 +42,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Drawing.Design" />
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Management" />
     <Reference Include="System.Net" />
     <Reference Include="System.Runtime.Serialization" />
@@ -54,7 +55,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DiscordWebhook.cs" />
+    <Compile Include="Discord\DiscordUtil.cs" />
+    <Compile Include="Discord\DiscordWebHook.cs" />
     <Compile Include="Info\NetCard.cs" />
     <Compile Include="Info\Sys.cs" />
     <Compile Include="Info\SysInfoClassDumper.cs" />
@@ -65,13 +67,19 @@
     <Compile Include="Native\Library.cs" />
     <Compile Include="Native\PInvoke.cs" />
     <Compile Include="Native\PInvokeUtils.cs" />
+    <Compile Include="Native\Runtime\C_mem.cs" />
+    <Compile Include="Native\Runtime\Win32Memory.cs" />
     <Compile Include="Native\Win32.cs" />
     <Compile Include="Reggy\RegHive.cs" />
     <Compile Include="Reggy\RegKey.cs" />
     <Compile Include="Reporter\FileReport.cs" />
     <Compile Include="Reporter\ProcessReport.cs" />
     <Compile Include="Reporter\RegReport.cs" />
+    <Compile Include="Reporter\SecurityReport.cs" />
+    <Compile Include="ThreadEx.cs" />
     <Compile Include="Utils\FileUtils.cs" />
+    <Compile Include="Utils\NetUtils.cs" />
+    <Compile Include="Utils\ZipUtils.cs" />
     <Compile Include="WinProcess\PROCESSENTRY32.cs" />
     <Compile Include="WinProcess\Win32Process.cs" />
     <Compile Include="Program.cs" />

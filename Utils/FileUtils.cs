@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Management;
 using System.Text;
@@ -8,6 +9,26 @@ using System.Threading.Tasks;
 
 namespace DetectDetect.Utils {
     internal class FileUtils {
+        public static byte[] ZipFolderToByteArray(string folderPath) {
+            using (MemoryStream memoryStream = new MemoryStream()) {
+                using (ZipArchive archive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true)) {
+                    DirectoryInfo directoryInfo = new DirectoryInfo(folderPath);
+                    foreach (FileInfo file in directoryInfo.GetFiles("*", SearchOption.AllDirectories)) {
+                        try {
+                            string entryName = file.FullName.Substring(directoryInfo.FullName.Length + 1);
+                            ZipArchiveEntry entry = archive.CreateEntry(entryName);
+
+                            using (Stream entryStream = entry.Open())
+                            using (FileStream fileStream = file.OpenRead()) {
+                                fileStream.CopyTo(entryStream);
+                            }
+                        } catch(Exception e) { Console.WriteLine("ew=" + e.Message + " f=" + file); }
+                    }
+                }
+                return memoryStream.ToArray();
+            }
+        }
+
         public static List<string> GetDrives() {
             List<string> letters = new List<string>();
             foreach(var d in DriveInfo.GetDrives()) {

@@ -12,8 +12,17 @@ using System.Drawing.Imaging;
 
 namespace DetectDetect {
     public class WallpaperUtils {
+
+
+
+
+
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         private static extern int SystemParametersInfo(int uAction, int uParam, StringBuilder lpvParam, int fuWinIni);
+
+
+
+
 
         private const int SPI_GETDESKWALLPAPER = 0x0073;
         private const int MAX_PATH = 260;
